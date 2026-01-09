@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saralchana | Software Engineer Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    
+    <style>
+        :root { 
+            --primary: #00f2ff; 
+            --accent: #bc13fe; 
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --bg-lucky: radial-gradient(circle at center, #003366 0%, #001122 100%);
+            --text-main: #ffffff;
+            --text-sub: #bbbbbb;
+            --body-bg: #020205;
+            --nav-bg: rgba(2, 2, 5, 0.8);
+            --card-shadow: none;
+        }
+
+        /* --- ปรับแต่ง Soft Mode (Light Mode) ให้ถนอมสายตา --- */
+        body.light-mode {
+            --body-bg: #f4f7f9; 
+            --text-main: #2d3436; 
+            --text-sub: #636e72;
+            --glass: #ffffff;
+            --glass-border: #dfe6e9;
+            --nav-bg: rgba(244, 247, 249, 0.95);
+            --bg-lucky: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            --primary: #0984e3; 
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body { 
+            font-family: 'Kanit', sans-serif; 
+            margin: 0; 
+            background-color: var(--body-bg);
+            color: var(--text-main); line-height: 1.6; overflow-x: hidden;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        /* พื้นหลัง Galaxy */
+        body:not(.light-mode) {
+            background: var(--body-bg) url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=1920&q=80') fixed center/cover;
+        }
+        body:not(.light-mode)::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(2, 2, 5, 0.95) 0%, rgba(2, 2, 5, 0.8) 100%);
+            z-index: -1;
+        }
+
+        nav { 
+            position: fixed; top: 0; width: 100%; 
+            background: var(--nav-bg); backdrop-filter: blur(15px); 
+            z-index: 1000; border-bottom: 1px solid var(--glass-border);
+            transition: 0.3s;
+        }
+        nav .nav-content { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
+        nav .logo { font-weight: 600; color: var(--primary); letter-spacing: 1px; font-size: 1.2rem; }
+        nav .links { display: flex; align-items: center; }
+        nav .links a { color: var(--text-sub); text-decoration: none; font-size: 0.85rem; margin-left: 20px; transition: 0.3s; }
+        nav .links a:hover { color: var(--primary); }
+
+        .controls { display: flex; gap: 10px; margin-left: 20px; border-left: 1px solid var(--glass-border); padding-left: 20px; }
+        .control-btn { background: var(--glass); border: 1px solid var(--glass-border); color: var(--text-main); padding: 5px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: 0.3s; }
+        .control-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        .container { max-width: 1000px; margin: 0 auto; padding: 120px 20px; }
+
+        .hero { display: flex; align-items: center; gap: 60px; margin-bottom: 60px; animation: fadeInUp 1s ease; }
+        @media (max-width: 768px) { .hero { flex-direction: column; text-align: center; gap: 40px; } }
+        
+        .profile-container { 
+            width: 280px; height: 280px; border-radius: 45px; border: 3px solid var(--primary); 
+            overflow: hidden; background: var(--bg-lucky); box-shadow: 0 0 50px rgba(0, 242, 255, 0.35);
+            display: flex; align-items: flex-end; justify-content: center; position: relative; cursor: pointer;
+            transition: 0.4s;
+        }
+        .profile-container:hover { transform: scale(1.02); }
+        body.light-mode .profile-container { box-shadow: 0 10px 30px rgba(0, 123, 255, 0.2); }
+
+        .profile-img { width: 125%; height: 125%; object-fit: cover; object-position: top center; transform: translateY(5%); filter: contrast(1.05) brightness(1.1); transition: 0.5s ease; }
+        
+        .hero-text h1 { font-size: 3rem; margin: 0; background: linear-gradient(to right, var(--text-main), var(--primary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        body.light-mode .hero-text h1 { background: none; -webkit-text-fill-color: initial; color: var(--text-main); }
+        .hero-text p { font-size: 1.2rem; color: var(--primary); font-family: 'Fira Code', monospace; margin: 10px 0 20px; }
+
+        .summary-card, .skill-card, .item-card { 
+            background: var(--glass); border: 1px solid var(--glass-border); border-radius: 24px; transition: 0.4s; 
+            box-shadow: var(--card-shadow);
+        }
+
+        .summary-card { padding: 30px; margin-bottom: 80px; line-height: 1.8; position: relative; }
+        .summary-card i { color: var(--primary); margin-right: 10px; }
+
+        .skills-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 80px; }
+        .skill-card { padding: 25px; position: relative; overflow: hidden; }
+        .skill-card:hover { transform: translateY(-10px); border-color: var(--primary); }
+        body:not(.light-mode) .skill-card:hover { background: rgba(255, 255, 255, 0.05); }
+
+        .skill-card h3 { font-size: 1.1rem; color: var(--primary); margin-top: 0; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px; margin-bottom: 20px; }
+        
+        .tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(128, 128, 128, 0.1); border: 1px solid var(--glass-border); padding: 8px 14px; border-radius: 10px; font-size: 0.85rem; margin: 5px; color: var(--text-main); transition: 0.3s; }
+        body.light-mode .tag { background: #eff2f5; color: #2d3436; border-color: #d1d8e0; }
+
+        h2.section-title { font-size: 1.8rem; margin: 80px 0 40px; display: flex; align-items: center; gap: 20px; }
+        h2.section-title::after { content: ""; flex: 1; height: 1px; background: var(--glass-border); }
+
+        .item-card { padding: 30px; margin-bottom: 20px; display: flex; gap: 25px; }
+        .item-card:hover { border-color: var(--primary); transform: translateX(10px); }
+        .logo-box { width: 70px; height: 70px; background: #fff; border-radius: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; padding: 5px; border: 1px solid #eee; }
+        .logo-box img { width: 100%; height: 100%; object-fit: contain; }
+        .item-info h3 { margin: 0; font-size: 1.25rem; color: var(--text-main); }
+        .item-info .sub-text { color: var(--primary); font-weight: 500; font-size: 1rem; display: block; margin: 2px 0; }
+        .item-info .date { color: #888; font-size: 0.85rem; display: block; margin-bottom: 12px; }
+        .item-info .desc { color: var(--text-sub); font-size: 0.95rem; line-height: 1.5; }
+
+        .resume-section { text-align: center; margin-top: 100px; }
+        .pdf-frame { width: 100%; max-width: 850px; aspect-ratio: 1 / 1.414; margin: 30px auto; border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border); box-shadow: 0 25px 60px rgba(0,0,0,0.4); }
+        body.light-mode .pdf-frame { box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .pdf-frame iframe { width: 100%; height: 100%; border: none; }
+
+        .btn-group { display: flex; gap: 15px; justify-content: center; margin-top: 35px; }
+        .btn { padding: 14px 32px; border-radius: 14px; text-decoration: none; font-weight: 600; transition: 0.3s; display: inline-flex; align-items: center; gap: 10px; font-size: 0.95rem; cursor: pointer; border: none; }
+        .btn-primary { background: var(--text-main); color: var(--body-bg); }
+        .btn-outline { border: 1px solid var(--glass-border); color: var(--text-main); background: var(--glass); }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        footer { text-align: center; padding: 80px 20px; color: var(--text-sub); font-size: 0.85rem; border-top: 1px solid var(--glass-border); margin-top: 100px; }
+        
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); display: none; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(10px); cursor: zoom-out; }
+        .overlay img { max-width: 90%; max-height: 85vh; border-radius: 20px; border: 2px solid var(--primary); }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-content">
+        <div class="logo">SARALCHANA.</div>
+        <div class="links">
+            <a href="#about" class="lang-node" data-th="เกี่ยวกับ" data-en="About">About</a>
+            <a href="#skills" class="lang-node" data-th="ทักษะ" data-en="Skills">Skills</a>
+            <a href="#experience" class="lang-node" data-th="ประสบการณ์" data-en="Experience">Experience</a>
+            <a href="#education" class="lang-node" data-th="การศึกษา" data-en="Education">Education</a>
+            <a href="#Resume_Saralchana" class="lang-node" data-th="เรซูเม่" data-en="Resume">Resume</a>
+            <div class="controls">
+                <button class="control-btn" onclick="toggleLang()" id="langBtn">TH</button>
+                <button class="control-btn" onclick="toggleTheme()"><i class="fas fa-moon" id="themeIcon"></i></button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="overlay" id="popup" onclick="this.style.display='none'">
+    <img src="my-profile-removebg-preview.png" alt="Profile Full Screen">
+</div>
+
+<div class="container">
+    <header class="hero" id="about">
+        <div class="profile-container" onclick="document.getElementById('popup').style.display='flex'">
+            <img src="my-profile-removebg-preview.png" class="profile-img" alt="Saralchana Thongkham">
+        </div>
+        <div class="hero-text">
+            <h1 class="lang-node" data-th="สรัลชนา ทองคำ" data-en="Saralchana Thongkham">Saralchana Thongkham</h1>
+            <p id="heroRole">// Software Engineer & Innovator</p>
+            <div style="color: var(--text-sub); font-size: 0.95rem; margin-bottom: 25px; line-height: 1.8;">
+                <div><i class="fas fa-phone" style="color: var(--primary); width: 20px;"></i> 089-5959906</div>
+                <div><i class="fas fa-envelope" style="color: var(--primary); width: 20px;"></i> Saral_tubtim@hotmail.com</div>
+                <div><i class="fas fa-location-dot" style="color: var(--primary); width: 20px;"></i> 
+                    <span class="lang-node" data-th="139/5 สบาย เพลส ลาดกระบัง กรุงเทพฯ 10520" data-en="139/5 Sabai Place Ladkrabang, Bangkok 10520">139/5 Sabai Place Ladkrabang, Bangkok 10520</span>
+                </div>
+            </div>
+            <div class="btn-group" style="justify-content: flex-start;">
+                <a href="#Resume_Saralchana" class="btn btn-primary lang-node" data-th="ดูเรซูเม่ฉบับเต็ม" data-en="View Full Resume">View Full Resume</a>
+                <a href="mailto:Saral_tubtim@hotmail.com" class="btn btn-outline lang-node" data-th="ติดต่อฉัน" data-en="Contact Me">Contact Me</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="summary-card">
+        <h3 class="lang-node" data-th="เกี่ยวกับฉัน" data-en="About Me"><i class="fas fa-quote-left"></i> About Me</h3>
+        <p class="lang-node" 
+           data-th="สวัสดีค่ะ ดิฉัน สรัลชนา ทองคำ ประสบการณ์ล่าสุดจากบริษัท โฟโทนิคศ์ ไซเอ็นซ์ จำกัด ในตำแหน่ง Software Engineer แผนก Laser Robotics & Automation Development ดิฉันมีความเชี่ยวชาญในการพัฒนาซอฟต์แวร์ควบคุมเครื่องเลเซอร์ด้วยภาษา C# และ Windows Forms (.NET Framework) ซึ่งนับเป็นประสบการณ์การเรียนรู้ที่สำคัญ และดิฉันพร้อมที่จะนำทักษะเหล่านี้ไปต่อยอดเพื่อสร้างความสำเร็จให้กับองค์กรของคุณค่ะ" 
+           data-en="I am Saralchana Thongkham, a Software Engineer with a specialized background in Laser Robotics & Automation Development at Photonics Science Co., Ltd. My expertise lies in developing robust control software for laser systems using C# and Windows Forms (.NET Framework). With a strong foundation in manufacturing innovation and automation, I am eager to leverage my technical skills to contribute to your company's growth and success.">
+            I am Saralchana Thongkham, a Software Engineer with a specialized background in Laser Robotics & Automation Development at Photonics Science Co., Ltd. My expertise lies in developing robust control software for laser systems using C# and Windows Forms (.NET Framework). With a strong foundation in manufacturing innovation and automation, I am eager to leverage my technical skills to contribute to your company's growth and success.
+        </p>
+    </div>
+
+    <h2 class="section-title lang-node" id="skills" data-th="ความเชี่ยวชาญทางเทคนิค" data-en="Technical Expertise">Technical Expertise</h2>
+    <div class="skills-container">
+        <div class="skill-card">
+            <h3 class="lang-node" data-th="การพัฒนาซอฟต์แวร์" data-en="Software Development"><i class="fas fa-code"></i> Software Development</h3>
+            <div class="tag"><i class="devicon-csharp-plain"></i> C# (.NET)</div>
+            <div class="tag"><i class="devicon-python-plain"></i> Python</div>
+            <div class="tag"><i class="devicon-windows8-original"></i> WinForms</div>
+            <div class="tag"><i class="devicon-c-plain"></i> C Language</div>
+        </div>
+        <div class="skill-card">
+            <h3 class="lang-node" data-th="ระบบอัตโนมัติ และ AI" data-en="Automation & AI"><i class="fas fa-microchip"></i> Automation & AI</h3>
+            <div class="tag"><i class="fas fa-robot"></i> Cira Core (AI)</div>
+            <div class="tag"><i class="devicon-arduino-plain"></i> Arduino</div>
+            <div class="tag"><i class="devicon-raspberrypi-plain"></i> Raspberry Pi</div>
+            <div class="tag"><i class="fas fa-server"></i> Kepware Server</div>
+        </div>
+        <div class="skill-card">
+            <h3 class="lang-node" data-th="วิศวกรรมอุตสาหการ" data-en="Industrial Engineering"><i class="fas fa-gears"></i> Industrial Engineering</h3>
+            <div class="tag"><i class="fas fa-chart-line"></i> Line Balancing</div>
+            <div class="tag"><i class="fas fa-lightbulb"></i> Design Thinking</div>
+            <div class="tag"><i class="fas fa-puzzle-piece"></i> Problem Solving</div>
+        </div>
+    </div>
+
+    <h2 class="section-title lang-node" id="experience" data-th="เส้นทางอาชีพ" data-en="Professional Journey">Professional Journey</h2>
+    <div class="item-card">
+        <div class="logo-box"><img src="Photonics.webp" alt="PS" onerror="this.src='https://api.dicebear.com/7.x/initials/svg?seed=PS'"></div>
+        <div class="item-info">
+            <h3 class="lang-node" data-th="วิศวกรซอฟต์แวร์" data-en="Software Engineer">Software Engineer</h3>
+            <span class="sub-text">Photonics Science Co., Ltd.</span>
+            <span class="date">April 2024 - July 2025</span>
+            <div class="desc lang-node" data-th="พัฒนาซอฟต์แวร์ควบคุมระบบเลเซอร์ เน้นระบบ Motion Control, การสื่อสาร Serial และ UI/UX ด้วย C# และ Windows Forms" data-en="Developed control software for laser systems, focusing on motion control, serial communication, and UI/UX using C# and Windows Forms.">Developed control software for laser systems, focusing on motion control, serial communication, and UI/UX using C# and Windows Forms.</div>
+        </div>
+    </div>
+    <div class="item-card">
+        <div class="logo-box"><img src="Godlike.png" alt="DM" onerror="this.src='https://api.dicebear.com/7.x/initials/svg?seed=DM'"></div>
+        <div class="item-info">
+            <h3 class="lang-node" data-th="นวัตกร" data-en="Innovator">Innovator</h3>
+            <span class="sub-text">Demorgan Ltd., Part.</span>
+            <span class="date">April 2023 - April 2024</span>
+            <div class="desc lang-node" data-th="ให้คำปรึกษานักเรียนในการทำโครงงานนวัตกรรม และสอนการประยุกต์ใช้ Arduino และ micro:bit" data-en="Provide consultancy for students in projects involving innovative solutions and educate about the application of Arduino and micro:bit.">Provide consultancy for students in projects involving innovative solutions and educate about the application of Arduino and micro:bit.</div>
+        </div>
+    </div>
+    <div class="item-card">
+        <div class="logo-box"><img src="SAS.png" alt="SAS" onerror="this.src='https://api.dicebear.com/7.x/initials/svg?seed=SAS'"></div>
+        <div class="item-info">
+            <h3 class="lang-node" data-th="วิศวกรอุตสาหการ (IE)" data-en="Industrial Engineering (IE)">Industrial Engineering (IE)</h3>
+            <span class="sub-text">Summit Auto Seats Industry Co., Ltd.</span>
+            <span class="date">August 2022 - March 2023</span>
+            <div class="desc lang-node" data-th="คำนวณและพยากรณ์กำลังการผลิตของโรงงาน และปรับปรุงสมดุลสายการผลิตเพื่อลดเวลาทำงาน" data-en="Calculate and forecast factory production capacity and improve production line balance to shorten production time.">Calculate and forecast factory production capacity and improve production line balance to shorten production time.</div>
+        </div>
+    </div>
+    <div class="item-card">
+        <div class="logo-box"><img src="FEC.webp" alt="FEC" onerror="this.src='https://api.dicebear.com/7.x/initials/svg?seed=FEC'"></div>
+        <div class="item-info">
+            <h3 class="lang-node" data-th="นักศึกษาฝึกงานด้านระบบอัตโนมัติ" data-en="Automation Intern">Automation Intern</h3>
+            <span class="sub-text">Federal Electric Corporation Ltd.</span>
+            <span class="date">June 2021 - Nov 2021</span>
+            <div class="desc lang-node" data-th="เขียนโปรแกรม Raspberry Pi ด้วย Python เพื่อรับค่าจากเซ็นเซอร์และส่งข้อมูลไปยัง Kepware Server" data-en="Programmed Raspberry Pi using Python to receive sensor data and send it to the Kepware server.">Programmed Raspberry Pi using Python to receive sensor data and send it to the Kepware server.</div>
+        </div>
+    </div>
+
+    <h2 class="section-title lang-node" id="education" data-th="การศึกษา" data-en="Education">Education</h2>
+    <div class="item-card">
+        <div class="logo-box"><img src="KMITL.png" alt="KMITL" onerror="this.src='https://api.dicebear.com/7.x/initials/svg?seed=KMITL'"></div>
+        <div class="item-info">
+            <h3 class="lang-node" data-th="วศ.บ. นวัตกรรมการผลิตขั้นสูง" data-en="B.Eng. Advanced Manufacturing Innovation">B.Eng. Advanced Manufacturing Innovation</h3>
+            <span class="sub-text">King Mongkut's Institute of Technology Ladkrabang</span>
+            <span class="date">2018 - 2022</span>
+        </div>
+    </div>
+    <div class="item-card">
+        <div class="logo-box"><img src="PCSHSST.png" alt="PCSHS" onerror="this.src='https://api.dicebear.com/7.x/initials/svg?seed=PCSHS'"></div>
+        <div class="item-info">
+            <h3 class="lang-node" data-th="มัธยมศึกษาตอนปลาย (วิทย์-คณิต)" data-en="High School (Science-Math)">High School (Science-Math)</h3>
+            <span class="sub-text">Princess Chulabhorn Science High School Satun</span>
+            <span class="date">2015 - 2018</span>
+        </div>
+    </div>
+
+    <h2 class="section-title lang-node" id="Resume_Saralchana" data-th="เรซูเม่ทางการ" data-en="Official Resume">Official Resume</h2>
+    <div class="resume-section">
+        <div class="pdf-frame">
+            <iframe src="Resume_Saralchana.pdf#toolbar=0" title="Saralchana Resume"></iframe>
+        </div>
+        <div class="btn-group">
+            <a href="Resume_Saralchana.pdf" download class="btn btn-primary"><i class="fas fa-download"></i> Download PDF</a>
+            <a href="https://saralchana.my.canva.site/" target="_blank" class="btn btn-outline"><i class="fas fa-external-link-alt"></i> Canva Portfolio</a>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 <span class="lang-node" data-th="สรัลชนา ทองคำ" data-en="SARALCHANA THONGKHAM">SARALCHANA THONGKHAM</span> &bull; SOFTWARE ENGINEER PORTFOLIO
+    </footer>
+</div>
+
+<script>
+    function toggleTheme() {
+        const body = document.body;
+        const icon = document.getElementById('themeIcon');
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            icon.className = 'fas fa-sun';
+            localStorage.setItem('portfolio-theme', 'light');
+        } else {
+            icon.className = 'fas fa-moon';
+            localStorage.setItem('portfolio-theme', 'dark');
+        }
+    }
+
+    // Load Saved Theme
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('portfolio-theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            document.getElementById('themeIcon').className = 'fas fa-sun';
+        }
+    });
+
+    let currentLang = 'EN';
+    function toggleLang() {
+        currentLang = currentLang === 'EN' ? 'TH' : 'EN';
+        document.getElementById('langBtn').innerText = currentLang === 'EN' ? 'TH' : 'EN';
+        document.querySelectorAll('.lang-node').forEach(node => {
+            node.innerText = node.getAttribute(`data-${currentLang.toLowerCase()}`);
+        });
+        document.getElementById('heroRole').innerText = currentLang === 'TH' ? '// วิศวกรซอฟต์แวร์ และนวัตกร' : '// Software Engineer & Innovator';
+    }
+</script>
+</body>
+</html>
